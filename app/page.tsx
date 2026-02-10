@@ -15,7 +15,10 @@ export default function Home() {
   const [value, setValue] = useState("");
   const [items, setItems] = useState<Item[] | null>(null);
 
-  // 목록 불러오기
+  /**
+   * 목록 불러오기
+   * - 최초 1회 호출
+   */
   useEffect(() => {
     getItems()
       .then(setItems)
@@ -24,7 +27,7 @@ export default function Home() {
       });
   }, []);
 
-  // 추가 -> 생성 후 상세로 이동
+  // 추가 -> 생성 후 "상세로 이동 X", 목록에 바로 반영
   const handleSubmit = async () => {
     const name = value.trim();
     if (!name) return;
@@ -32,17 +35,24 @@ export default function Home() {
     try {
       const newItem = await createItem({ name });
 
-      console.log("newItem:", newItem);
-      console.log("newItem.id:", newItem.id, typeof newItem.id);
-
+      // ✅ input 비우기
       setValue("");
-      router.push(`/items/${newItem.id}`);
+
+      // ✅ 목록 state에 즉시 추가해서 TODO 섹션에 보이게
+      setItems((prev) => {
+        if (!prev) return [newItem];
+        return [newItem, ...prev]; // 최신이 위로 오게
+      });
+
+      // ✅ 상세 이동 제거
+      // router.push(`/items/${newItem.id}`);
     } catch (error) {
       console.error(error);
     }
   };
-
-  // 완료/미완료 토글 -> API 반영 후 목록 state 업데이트
+  /**
+   * 완료/미완료 토글 -> API 반영 후 목록 state 업데이트
+   */
   const handleToggle = async (item: Item) => {
     try {
       const updated = await updateItem(item.id, {
@@ -78,7 +88,7 @@ export default function Home() {
         {/* Sections */}
         <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
           {/* TODO */}
-          <section className="min-h-[220px] rounded-2xl bg-slate-100 p-4">
+          <section className="min-h-[220px] rounded-2xl p-4">
             <div className="mb-4 flex items-center">
               <img
                 src="/assets/icons/img/todo.svg"
@@ -104,7 +114,7 @@ export default function Home() {
           </section>
 
           {/* DONE */}
-          <section className="min-h-[220px] rounded-2xl bg-slate-100 p-4">
+          <section className="min-h-[220px] rounded-2xl p-4">
             <div className="mb-4 flex items-center">
               <img
                 src="/assets/icons/img/done.svg"

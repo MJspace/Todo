@@ -13,7 +13,13 @@ export default function TodoItemRow({ item, onToggle }: Props) {
 
   return (
     <div
-      className="flex items-center justify-between rounded-lg bg-white p-3 shadow-sm hover:cursor-pointer hover:bg-slate-50"
+      className={`
+      flex items-center justify-center gap-3
+      rounded-full border border-slate-900
+      px-5
+      h-12 md:h-10
+      ${item.isCompleted ? "bg-[var(--color-violet-100)]" : "bg-white"}
+    `}
       onClick={() => {
         router.push(`/items/${item.id}`);
       }}
@@ -25,9 +31,6 @@ export default function TodoItemRow({ item, onToggle }: Props) {
           e.stopPropagation();
           onToggle(item);
         }}
-        aria-label={
-          item.isCompleted ? "Mark as not completed" : "Mark as completed"
-        }
         className="mr-3 flex h-6 w-6 items-center justify-center"
       >
         <img

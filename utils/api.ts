@@ -23,17 +23,14 @@ function mustTenantId() {
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(joinUrl(BASE_URL, path), {
     ...init,
-    // 과제 API는 캐시하면 갱신이 안 보일 수 있어서 no-store 추천
     cache: "no-store",
   });
 
-  // 실패 시 디버깅 가능한 메시지
   if (!res.ok) {
     const text = await res.text().catch(() => "");
     throw new Error(`[${res.status}] ${res.statusText} - ${text}`);
   }
 
-  // DELETE 같은 응답이 비어있는 경우 대비
   const contentType = res.headers.get("content-type") ?? "";
   if (!contentType.includes("application/json")) {
     return undefined as T;
@@ -80,14 +77,16 @@ export async function deleteItem(itemId: number): Promise<void> {
   await request<void>(`/api/${tenantId}/items/${itemId}`, { method: "DELETE" });
 }
 
-/** POST /api/{tenantId}/images/upload */
-export function uploadImage(file: File): Promise<{ imageUrl: string }> {
+/**
+ * POST /api/{tenantId}/images/upload
+ * Swagger 응답: { "url": "string" }
+ */
+export function uploadImage(file: File): Promise<{ url: string }> {
   const tenantId = mustTenantId();
   const formData = new FormData();
-  // Swagger에서 field name이 image인 경우가 보통이라 image로 둠 (다르면 바꿔야 함)
   formData.append("image", file);
 
-  return request<{ imageUrl: string }>(`/api/${tenantId}/images/upload`, {
+  return request<{ url: string }>(`/api/${tenantId}/images/upload`, {
     method: "POST",
     body: formData,
   });

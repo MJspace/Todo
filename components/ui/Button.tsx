@@ -1,7 +1,5 @@
 "use client";
 
-import React from "react";
-
 type ButtonProps = {
   src: string;
   ariaLabel: string;

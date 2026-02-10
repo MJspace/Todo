@@ -34,17 +34,15 @@ export default function Home() {
 
     try {
       const newItem = await createItem({ name });
-
-      // ✅ input 비우기
       setValue("");
 
-      // ✅ 목록 state에 즉시 추가해서 TODO 섹션에 보이게
+      // 목록 state에 즉시 추가해서 TODO 섹션에 보이게
       setItems((prev) => {
         if (!prev) return [newItem];
         return [newItem, ...prev]; // 최신이 위로 오게
       });
 
-      // ✅ 상세 이동 제거
+      // 상세 이동 제거
       // router.push(`/items/${newItem.id}`);
     } catch (error) {
       console.error(error);

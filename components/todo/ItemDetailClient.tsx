@@ -41,10 +41,6 @@ export default function ItemDetailClient({ initialItem }: Props) {
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  /**
-   * ✅ "활성화(보라색)" 여부는 state로 저장하지 말고,
-   * 서버에 저장되는 값(memo/imageUrl/isCompleted)을 기준으로 매 렌더 계산
-   */
   const hasMemo = memo.trim().length > 0;
   const hasImage = Boolean(imageUrl) || Boolean(previewUrl);
   const isActive = isCompleted || hasMemo || hasImage;
@@ -166,7 +162,7 @@ export default function ItemDetailClient({ initialItem }: Props) {
     }
   };
 
-  // ✅ 화면에 보여줄 이미지 우선순위: (1) 로컬 미리보기 -> (2) 서버 저장 imageUrl
+  // 화면에 보여줄 이미지 우선순위: (1) 로컬 미리보기 -> (2) 서버 저장 imageUrl
   const displayImageSrc = previewUrl || imageUrl;
 
   return (
@@ -246,7 +242,7 @@ export default function ItemDetailClient({ initialItem }: Props) {
               </div>
             )}
 
-            {/* ✅ 버튼 아이콘: 활성화면 "수정(연필)" / 비활성화면 "플러스" */}
+            {/* 버튼 아이콘: 활성화면 "수정(연필)" / 비활성화면 "플러스" */}
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}

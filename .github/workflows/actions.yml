@@ -1,23 +1,26 @@
 name: Github Actions 연습하기
 on: push
 jobs:
-  push-job:
+  # .github/workflows/actions.yml
+
+name: Github Actions로 테스트 자동화하기
+on: push
+
+jobs:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: 첫번째 작업
-        run: echo "첫 번째 작업 실행 중"
+      - name: Github Repository 불러오기
+        uses: actions/checkout@v5
 
-      - name: 여러 명령어 문장 작성하기
-        run: |
-          echo "첫 번째 명령어"
-          echo "두 번째 명령어"
+      - name: Node.js 설치하기
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
 
-      - name: Github Actions 자체에 저장되어 있는 변수 사용해보기
-        run: |
-          echo $GITHUB_SHA
-          echo $GITHUB_REPOSITORY
+      - name: 의존성(라이브러리) 설치
+        run: npm ci
 
-      - name: Github Actions Secret 변수 사용해보기
-        run: |
-          echo ${{ secrets.MY_NAME }}
-          echo ${{ secrets.MY_HOBBY }}
+      - name: 테스트 실행하기
+        run: npm run test
+

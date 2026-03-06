@@ -61,7 +61,7 @@ export default function ItemDetailClient({ initialItem }: Props) {
   }, [imageFile]);
 
   /**
-   * 파일명(영문만) + 5MB 제한 검사
+   파일명(영문만) + 5MB 제한 검사
    */
   const handlePickFile = (file: File) => {
     const isUnder5MB = file.size <= 5 * 1024 * 1024;

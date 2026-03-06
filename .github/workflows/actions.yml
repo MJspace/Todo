@@ -1,10 +1,5 @@
 name: Github Actions 연습하기
 on: push
-jobs:
-  # .github/workflows/actions.yml
-
-name: Github Actions로 테스트 자동화하기
-on: push
 
 jobs:
   test:
@@ -16,11 +11,10 @@ jobs:
       - name: Node.js 설치하기
         uses: actions/setup-node@v6
         with:
-          node-version: '24'
+          node-version: "24"
 
       - name: 의존성(라이브러리) 설치
         run: npm ci
 
       - name: 테스트 실행하기
         run: npm run test
-

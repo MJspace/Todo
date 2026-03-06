@@ -19,5 +19,5 @@ jobs:
 
       - name: Github Actions Secret 변수 사용해보기
         run: |
-          echo ${{ secrets_MY_NAME }}
+          echo ${{ SECRETS_MY_NAME }}
           echo ${{ secrets.MY_HOBBY }}

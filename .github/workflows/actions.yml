@@ -1,0 +1,8 @@
+name: Github Actions 연습하기
+on: push
+jobs:
+  push-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 첫번째 작업
+        run: echo "첫 번째 작업 실행 중"
